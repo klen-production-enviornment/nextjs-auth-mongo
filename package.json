@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "export": "next export",
+    "nojekyll": "touch out/.nojekyll",
     "start": "next start --port ${PORT-3000}"
   },
   "author": "Faraz Patankar",

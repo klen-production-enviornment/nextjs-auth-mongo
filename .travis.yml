@@ -1,0 +1,29 @@
+language: node_js # https://docs.travis-ci.com/user/deployment/pages/
+node_js:
+  - 14
+cache:
+  directories:
+  - node_modules
+script:
+  - npm run build # Runs next build
+  - npm run export # Runs next export and generates the out directory
+  - npm run nojekyll # Runs the code below, (listed in the comment)
+  # - touch out/.nojekyll # Creates a file telling Github not to build the project using Jekyll
+deploy:
+  provider: pages # Informs Travis this is a deployment to GitHub Pages
+  target_branch: gh-pages # Builds the site from main and pushes it to the live branch
+  skip_cleanup: true # Prevents Travis from resetting the working directory made during the build
+  keep_history: true # Optional, create incremental commit instead of doing push force
+  allow_empty_commit: true # Optional, defaults to false. Enabled if only keep_history is true.
+  fqdn: auth.mtrontz.dev # Optional, sets a custom domain for your website, defaults to no custom domain support.
+  github_token: $tci_token # GitHub access token to use when pushing to the gh-pages branch
+  local_dir: out # Directory to push to the gh-pages branch
+  committer_from_gh: true # Optional, defaults to false. Allows you to use the token’s owner name and email for commit. Overrides email and name options.
+  email: mtrontz@trontzenterprises.com # Primary Author
+  name: mtrontz-the-dev #You don't know?
+  verbose: true # Optional, be verbose about internal steps, defaults to false.
+  on:
+    # Only deploy when the build is on master or main branch - two common default branch names
+    # If you're using a different branch name, add it here
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^(master|main)$
